@@ -26,6 +26,7 @@ async (req,res) => {
 
 	const { name, email, password } = req.body;
 
+	// Check if user exists
 	try {
 
 		let user = await User.findOne({ email });
@@ -65,12 +66,14 @@ async (req,res) => {
 
 		jwt.sign(
 			payload,
-			config.get('jwtSecret')),
+			config.get('jwtSecret'),
 			{ expiresIn: 360000 },
 			(err,token) => {
 				if (err) throw err;
 				res.json({ token });
-			};
+			}
+		);
+
 	} catch(err) {
 		console.error(err.message);
 		res.status(500).send("Server error");
